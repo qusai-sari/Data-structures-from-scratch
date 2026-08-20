@@ -5,14 +5,14 @@ class Vector
 {
 public:
     int *arr = nullptr;
-    int currentSize {1};
+    int currentSize{1};
     int actual;
 
     Vector(int size) : actual(size * 2)
     {
         if (actual < 0)
             actual = 1;
-        
+
         arr = new int[actual];
     }
 
@@ -25,20 +25,24 @@ public:
 public:
     int get(int index)
     {
-        if (index >= 0 && index < currentSize)
-            return arr[index];
+        if (index < 0 || index >= currentSize)
+            throw out_of_range("Error: Index out of bounds!");
+
+        return arr[index];
     }
 
     void set(int index, int val)
     {
-        if (index >= 0 && index < currentSize)
-            arr[index] = val;
+        if (index < 0 || index >= currentSize)
+            throw out_of_range("Error: Index out of bounds!");
+
+        arr[index] = val;
     }
 
     void print()
     {
         for (int i = 0; i < currentSize; ++i)
-        { 
+        {
             cout << arr[i] << " ";
         }
         cout << "\n";
@@ -47,7 +51,7 @@ public:
     int find(int val)
     {
         for (int i = 0; i < currentSize; ++i)
-        { 
+        {
             if (arr[i] == val)
                 return i;
         }
@@ -70,7 +74,7 @@ public:
 
         int *arr1 = new int[actual];
         for (int i = 0; i < currentSize; ++i)
-        { 
+        {
             arr1[i + offset] = arr[i];
         }
         delete[] arr;
@@ -88,10 +92,10 @@ public:
     void shiftRight(int indexToShiftFrom = 0)
     {
         if (currentSize >= actual)
-        extendSize();
-        
+            extendSize();
+
         ++currentSize;
-        
+
         for (int i = currentSize - 1; i > indexToShiftFrom; --i)
         {
             arr[i] = arr[i - 1];
@@ -100,11 +104,11 @@ public:
 
     void insert(int index, int val)
     {
-        if (index >= 0 && index < currentSize)
-        {
-            shiftRight(index);
-            arr[index] = val;
-        }
+        if (index < 0 || index >= currentSize)
+            throw out_of_range("Error: Index out of bounds!");
+
+        shiftRight(index);
+        arr[index] = val;
     }
 
     void pushFront(int val)
