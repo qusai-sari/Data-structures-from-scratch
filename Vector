@@ -1,0 +1,144 @@
+#include <iostream>
+using namespace std;
+
+class Vector
+{
+public:
+    int *arr = nullptr;
+    int currentSize {1};
+    int actual;
+
+    Vector(int size) : actual(size * 2)
+    {
+        if (actual < 0)
+            actual = 1;
+        
+        arr = new int[actual];
+    }
+
+    ~Vector()
+    {
+        delete[] arr;
+        arr = nullptr;
+    }
+
+public:
+    int get(int index)
+    {
+        if (index >= 0 && index < currentSize)
+            return arr[index];
+    }
+
+    void set(int index, int val)
+    {
+        if (index >= 0 && index < currentSize)
+            arr[index] = val;
+    }
+
+    void print()
+    {
+        for (int i = 0; i < currentSize; ++i)
+        { 
+            cout << arr[i] << " ";
+        }
+        cout << "\n";
+    }
+
+    int find(int val)
+    {
+        for (int i = 0; i < currentSize; ++i)
+        { 
+            if (arr[i] == val)
+                return i;
+        }
+        return -1;
+    }
+
+    int getFront()
+    {
+        return arr[0];
+    }
+
+    int getBack()
+    {
+        return arr[currentSize - 1];
+    }
+
+    void extendSize(int offset = 0)
+    {
+        actual = actual * 2 + offset;
+
+        int *arr1 = new int[actual];
+        for (int i = 0; i < currentSize; ++i)
+        { 
+            arr1[i + offset] = arr[i];
+        }
+        delete[] arr;
+        arr = arr1;
+    }
+
+    void pushBack(int val)
+    {
+        if (currentSize >= actual)
+            extendSize();
+
+        arr[currentSize++] = val;
+    }
+
+    void shiftRight(int indexToShiftFrom = 0)
+    {
+        if (currentSize >= actual)
+        extendSize();
+        
+        ++currentSize;
+        
+        for (int i = currentSize - 1; i > indexToShiftFrom; --i)
+        {
+            arr[i] = arr[i - 1];
+        }
+    }
+
+    void insert(int index, int val)
+    {
+        if (index >= 0 && index < currentSize)
+        {
+            shiftRight(index);
+            arr[index] = val;
+        }
+    }
+
+    void pushFront(int val)
+    {
+        if (currentSize >= actual)
+        {
+            extendSize(1);
+            ++currentSize;
+        }
+        else
+        {
+            shiftRight();
+        }
+
+        arr[0] = val;
+    }
+};
+
+int main()
+{
+    // Simple example to test some methods
+    Vector v(1);
+
+    v.set(0, 5);
+    v.print();
+
+    v.pushBack(10);
+    v.print();
+
+    v.pushFront(2);
+    v.print();
+
+    v.insert(1, 80);
+    v.print();
+
+    return 0;
+}
