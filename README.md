@@ -51,10 +51,10 @@ A custom template-based dynamic array mimicking `std::vector` with amortized $O(
 ### Running Example
 ```bash
 # Clone the repository
-git clone [https://github.com/your-username/cpp-data-structures-from-scratch.git](https://github.com/your-username/cpp-data-structures-from-scratch.git)
+git clone [https://github.com/your-username/cpp-data-structures-from-scratch.git](https://github.com/Qusai-netizen/Data-structures-from-scratch.git)
 
 # Navigate to the folder
-cd cpp-data-structures-from-scratch
+cd Data-structures-from-scratch
 
 # Compile main/test script
 g++ -std=c++17 main.cpp -o main
