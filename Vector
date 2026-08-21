@@ -8,12 +8,14 @@ public:
     int currentSize{1};
     int actual;
 
-    Vector(int size) : actual(size * 2)
+    Vector(int size) : currentSize(size), actual(size * 2)
     {
         if (actual < 0)
             actual = 1;
 
         arr = new int[actual];
+
+        initialize();
     }
 
     ~Vector()
@@ -23,6 +25,12 @@ public:
     }
 
 public:
+    void initialize(int n = 0)
+    {
+        for (int i = 0; i < currentSize; ++i)
+            arr[i] = n;
+    }
+
     int get(int index)
     {
         if (index < 0 || index >= currentSize)
