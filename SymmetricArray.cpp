@@ -174,6 +174,7 @@ int main()
 
 	// Display elements
 
+	
 	symm.display();
 
 	// ---------------------------------------------
