@@ -85,9 +85,9 @@ public:
 
 		unsigned index;
 
-		if (index1 <= index2) index = (index1 * _n) + (index2)-((index1 * (index1 + 1)) / 2);
+		if (index1 <= index2) index = (index1 * _n) + (index2) - ((index1 * (index1 + 1)) / 2);
 
-		else                  index = (index2 * _n) + (index1)-((index2 * (index2 + 1)) / 2);
+		else                  index = (index2 * _n) + (index1) - ((index2 * (index2 + 1)) / 2);
 
 		return index;
 	}
