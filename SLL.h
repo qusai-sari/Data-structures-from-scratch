@@ -8,33 +8,40 @@ class SLL
 	struct node
 	{
 		int data;
-		node* link;
+		node *link;
 
 	public:
-
-		node(int val) { data = val; link = nullptr; }
+		node(int val)
+		{
+			data = val;
+			link = nullptr;
+		}
 	};
 
-	node* head;
-	node* tail;
+	node *head;
+	node *tail;
 	int _size;
 
 public:
-
 	// Constructor and Destructor
 
-	SLL() { head = tail = nullptr; _size = 0; }
+	SLL()
+	{
+		head = tail = nullptr;
+		_size = 0;
+	}
 
-	SLL(const SLL& sll) : SLL()
+	SLL(const SLL &sll) : SLL()
 	{
 		if (sll.empty())
 		{
-			head = tail = nullptr; _size = 0;
+			head = tail = nullptr;
+			_size = 0;
 			return;
 		}
 
-		node* nodeInThisSLL = head = getNewNode();
-		node* nodeInSLLToBeCopied = sll.head;
+		node *nodeInThisSLL = head = getNewNode();
+		node *nodeInSLLToBeCopied = sll.head;
 
 		while (nodeInSLLToBeCopied != nullptr)
 		{
@@ -47,21 +54,22 @@ public:
 				nodeInThisSLL->link = getNewNode();
 				nodeInThisSLL = nodeInThisSLL->link;
 			}
-
 		}
 		tail = nodeInThisSLL;
 	}
 
-	SLL& operator=(const SLL& sll)
+	SLL &operator=(const SLL &sll)
 	{
-		if (&sll == this) return *this;
+		if (&sll == this)
+			return *this;
 
 		clear();
 
-		if (sll.empty()) return *this;
+		if (sll.empty())
+			return *this;
 
-		node* nodeInThisSLL = head = getNewNode();
-		node* nodeInSLLToBeCopied = sll.head;
+		node *nodeInThisSLL = head = getNewNode();
+		node *nodeInSLLToBeCopied = sll.head;
 
 		while (nodeInSLLToBeCopied != nullptr)
 		{
@@ -74,7 +82,6 @@ public:
 				nodeInThisSLL->link = getNewNode();
 				nodeInThisSLL = nodeInThisSLL->link;
 			}
-
 		}
 		tail = nodeInThisSLL;
 
@@ -86,25 +93,38 @@ public:
 	// Methods
 
 private:
-
-	node* getNewNode() { ++_size; return new node(0); }
-	
-	void indexValidation(int index, bool isSizeAllowed = false, bool isEmptyAllowed = false) const
+	node *getNewNode()
 	{
-		if (!isEmptyAllowed && empty()) throw std::out_of_range("There is no node!");
-
-		if (index < 0) throw std::out_of_range("Index can't be negative!");
-
-		if (isSizeAllowed) { if (index > _size) throw std::out_of_range("Index is bigger than the size!"); }
-		else               { if (index >= _size) throw std::out_of_range("This index is out of range!"); }
+		++_size;
+		return new node(0);
 	}
 
-	node* getNode(int index) const
+	void indexValidation(int index, bool isSizeAllowed = false, bool isEmptyAllowed = false) const
+	{
+		if (!isEmptyAllowed && empty())
+			throw std::out_of_range("There is no node!");
+
+		if (index < 0)
+			throw std::out_of_range("Index can't be negative!");
+
+		if (isSizeAllowed)
+		{
+			if (index > _size)
+				throw std::out_of_range("Index is bigger than the size!");
+		}
+		else
+		{
+			if (index >= _size)
+				throw std::out_of_range("This index is out of range!");
+		}
+	}
+
+	node *getNode(int index) const
 	{
 		indexValidation(index);
 
 		int currentIn = 0;
-		node* currentNode = head;
+		node *currentNode = head;
 		while (currentIn < index)
 		{
 			currentNode = currentNode->link;
@@ -114,7 +134,6 @@ private:
 	}
 
 public:
-
 	// Size
 	int size() const { return _size; }
 
@@ -130,9 +149,9 @@ public:
 		}
 		else
 		{
-			node* ptr = head;
-			head = getNewNode();// New head
-			head->link = ptr; // Link the new head to the last one
+			node *ptr = head;
+			head = getNewNode(); // New head
+			head->link = ptr;	 // Link the new head to the last one
 		}
 
 		// New first node data assignment.
@@ -169,20 +188,21 @@ public:
 		}
 		else
 		{
-			node* newNode = getNewNode();
-			node* nodeBefore = getNode(index - 1);
+			node *newNode = getNewNode();
+			node *nodeBefore = getNode(index - 1);
 
 			newNode->data = val;
 
 			newNode->link = nodeBefore->link; // New node points to the node of "index";
-			nodeBefore->link = newNode; // Node before the node of "index" points to the new node;
+			nodeBefore->link = newNode;		  // Node before the node of "index" points to the new node;
 		}
 	}
 
 	// Remove
 	void pop_back()
 	{
-		if (empty()) throw std::out_of_range("There is no node!");
+		if (empty())
+			throw std::out_of_range("There is no node!");
 
 		if (_size == 1)
 		{
@@ -191,7 +211,7 @@ public:
 		}
 		else
 		{
-			node* BeforeFinalNode = getNode(_size - 2);
+			node *BeforeFinalNode = getNode(_size - 2);
 
 			delete tail;
 			tail = BeforeFinalNode;
@@ -202,7 +222,8 @@ public:
 
 	void pop_front()
 	{
-		if (empty()) throw std::out_of_range("There is no node to pop!");
+		if (empty())
+			throw std::out_of_range("There is no node to pop!");
 
 		if (_size == 1)
 		{
@@ -211,7 +232,7 @@ public:
 		}
 		else
 		{
-			node* afterHeadNode = head->link;
+			node *afterHeadNode = head->link;
 
 			delete head;
 			head = afterHeadNode;
@@ -233,8 +254,8 @@ public:
 		}
 		else
 		{
-			node* nodeBeforeNodeTobeErased = getNode(index - 1);
-			node* nextNode = nodeBeforeNodeTobeErased->link->link;
+			node *nodeBeforeNodeTobeErased = getNode(index - 1);
+			node *nextNode = nodeBeforeNodeTobeErased->link->link;
 
 			delete nodeBeforeNodeTobeErased->link;
 			nodeBeforeNodeTobeErased->link = nextNode; // Node before the node to be erased link points to the node next to it;
@@ -246,7 +267,7 @@ public:
 	{
 		while (head != nullptr)
 		{
-			node* nextNode = head->link;
+			node *nextNode = head->link;
 			delete head;
 			head = nextNode;
 		}
@@ -255,17 +276,23 @@ public:
 	}
 
 	// Modify
-	void set(int index, int val) { indexValidation(index); getNode(index)->data = val; }
+	void set(int index, int val)
+	{
+		indexValidation(index);
+		getNode(index)->data = val;
+	}
 
 	void reverse()
 	{
-		if (empty()) throw std::out_of_range("There is no node!");
-		if (_size == 1) return;
+		if (empty())
+			throw std::out_of_range("There is no node!");
+		if (_size == 1)
+			return;
 
-		node* before = nullptr;
-		node* current = head;
-		node* next = nullptr;
-		
+		node *before = nullptr;
+		node *current = head;
+		node *next = nullptr;
+
 		tail = head;
 
 		while (current != nullptr)
@@ -281,22 +308,23 @@ public:
 
 	void sortSLL()
 	{
-		if (empty()) throw std::out_of_range("There is no node!");
+		if (empty())
+			throw std::out_of_range("There is no node!");
 
 		std::vector<int> nodesVals(_size);
 
-		node* currentNode = head;
+		node *currentNode = head;
 
-		for (int i = 0;i < _size; ++i)
+		for (int i = 0; i < _size; ++i)
 		{
 			nodesVals[i] = currentNode->data;
 			currentNode = currentNode->link;
 		}
 
-	    std::sort(nodesVals.begin(), nodesVals.end());
+		std::sort(nodesVals.begin(), nodesVals.end());
 
 		currentNode = head;
-		for (int i = 0;i < _size; ++i)
+		for (int i = 0; i < _size; ++i)
 		{
 			currentNode->data = nodesVals[i];
 			currentNode = currentNode->link;
@@ -304,22 +332,41 @@ public:
 	}
 
 	// Retrieve
-	int front() const { if (empty()) throw std::out_of_range("There is no node!"); return head->data; }
+	int front() const
+	{
+		if (empty())
+			throw std::out_of_range("There is no node!");
+		return head->data;
+	}
 
-	int back() const { if (empty()) throw std::out_of_range("There is no node!"); return tail->data; }
+	int back() const
+	{
+		if (empty())
+			throw std::out_of_range("There is no node!");
+		return tail->data;
+	}
 
-	int get(int index) const { indexValidation(index); return getNode(index)->data; }
+	int get(int index) const
+	{
+		indexValidation(index);
+		return getNode(index)->data;
+	}
 
 	// Search
 	int search(int val) const
 	{
-		if (empty()) throw std::out_of_range("There is no node!");
+		if (empty())
+			throw std::out_of_range("There is no node!");
 
 		int index = -1;
-		node* _node = head;
+		node *_node = head;
 		for (int i = 0; i < _size; ++i)
 		{
-			if (val == _node->data) { index = i; break; }
+			if (val == _node->data)
+			{
+				index = i;
+				break;
+			}
 			_node = _node->link;
 		}
 
