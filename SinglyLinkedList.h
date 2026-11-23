@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 
-class SLL
+class SinglyLinkedList
 {
 
 	struct node
@@ -23,15 +23,16 @@ class SLL
 	int _size;
 
 public:
+
 	// Constructor and Destructor
 
-	SLL()
+	SinglyLinkedList()
 	{
 		head = tail = nullptr;
 		_size = 0;
 	}
 
-	SLL(const SLL &sll) : SLL()
+	SinglyLinkedList(const SinglyLinkedList &sll) : SinglyLinkedList()
 	{
 		if (sll.empty())
 		{
@@ -58,7 +59,7 @@ public:
 		tail = nodeInThisSLL;
 	}
 
-	SLL &operator=(const SLL &sll)
+	SinglyLinkedList &operator=(const SinglyLinkedList &sll)
 	{
 		if (&sll == this)
 			return *this;
@@ -88,11 +89,12 @@ public:
 		return *this;
 	}
 
-	~SLL() { clear(); }
+	~SinglyLinkedList() { clear(); }
 
 	// Methods
 
 private:
+
 	node *getNewNode()
 	{
 		++_size;
@@ -134,6 +136,7 @@ private:
 	}
 
 public:
+
 	// Size
 	int size() const { return _size; }
 
