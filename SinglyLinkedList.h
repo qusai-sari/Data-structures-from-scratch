@@ -1,6 +1,4 @@
 #pragma once
-#include <vector>
-#include <algorithm>
 
 class SinglyLinkedList
 {
@@ -23,7 +21,6 @@ class SinglyLinkedList
 	int _size;
 
 public:
-
 	// Constructor and Destructor
 
 	SinglyLinkedList()
@@ -94,7 +91,6 @@ public:
 	// Methods
 
 private:
-
 	node *getNewNode()
 	{
 		++_size;
@@ -135,8 +131,83 @@ private:
 		return currentNode;
 	}
 
-public:
+	static void mergeSortedHalves(SinglyLinkedList &list)
+	{
+		if (list.size() < 2)
+			return;
 
+		const int lSize = (list.size() + 1) / 2;
+
+		node *lTail = list.getNode(lSize - 1), *l = list.head, *r = lTail->link, *full = nullptr;
+		lTail->link = nullptr;
+
+		if (l->data > r->data)
+		{
+			full = list.head = r;
+			r = r->link;
+		}
+		else
+		{
+			full = list.head = l;
+			l = l->link;
+		}
+
+		while (true)
+		{
+			node **small = nullptr;
+			if (!r)
+				small = &l;
+			else if (!l || l->data > r->data)
+				small = &r;
+			else
+				small = &l;
+
+			full->link = *small;
+			full = full->link;
+
+			if (!r)
+				list.tail = lTail;
+			if (!r || !l)
+				return;
+
+			*small = (*small)->link;
+		}
+	}
+
+	static void sort(SinglyLinkedList &list)
+	{
+		if (list.size() > 2)
+		{
+			const int lSize = (list.size() + 1) / 2;
+			const int rSize = list.size() / 2;
+
+			SinglyLinkedList r, l;
+
+			l.head = list.head;
+			l.tail = list.getNode(lSize - 1);
+			l._size = lSize;
+
+			r.head = l.tail->link;
+			r.tail = list.tail;
+			r._size = rSize;
+
+			l.tail->link = nullptr;
+
+			sort(l);
+			sort(r);
+
+			l.merge(r);
+
+			list.head = l.head;
+			list.tail = l.tail;
+
+			l.head = l.tail = nullptr;
+			l._size = 0;
+		}
+		mergeSortedHalves(list);
+	}
+
+public:
 	// Size
 	int size() const { return _size; }
 
@@ -199,6 +270,25 @@ public:
 			newNode->link = nodeBefore->link; // New node points to the node of "index";
 			nodeBefore->link = newNode;		  // Node before the node of "index" points to the new node;
 		}
+	}
+
+	void merge(SinglyLinkedList &other)
+	{
+		if (other.empty() || &other == this)
+			return;
+
+		// splice nodes
+		if (!empty())
+			tail->link = other.head;
+		else
+			head = other.head;
+
+		tail = other.tail;
+		_size += other._size;
+
+		// Relinquish nodes
+		other.head = other.tail = nullptr;
+		other._size = 0;
 	}
 
 	// Remove
@@ -309,30 +399,7 @@ public:
 		head = before;
 	}
 
-	void sortSLL()
-	{
-		if (empty())
-			throw std::out_of_range("There is no node!");
-
-		std::vector<int> nodesVals(_size);
-
-		node *currentNode = head;
-
-		for (int i = 0; i < _size; ++i)
-		{
-			nodesVals[i] = currentNode->data;
-			currentNode = currentNode->link;
-		}
-
-		std::sort(nodesVals.begin(), nodesVals.end());
-
-		currentNode = head;
-		for (int i = 0; i < _size; ++i)
-		{
-			currentNode->data = nodesVals[i];
-			currentNode = currentNode->link;
-		}
-	}
+	void sort() { sort(*this); }
 
 	// Retrieve
 	int front() const
@@ -358,9 +425,6 @@ public:
 	// Search
 	int search(int val) const
 	{
-		if (empty())
-			throw std::out_of_range("There is no node!");
-
 		int index = -1;
 		node *_node = head;
 		for (int i = 0; i < _size; ++i)
